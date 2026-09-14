@@ -40,6 +40,7 @@ public final class Operators {
   /// @param keep predicate that returns true for messages to keep, false to drop
   /// @param <T> the operator's value type
   /// @return an operator that returns its input when `keep.test(input)` is true, else null
+  /// @throws NullPointerException if `keep` is null
   public static <T> UnaryOperator<T> filter(final Predicate<T> keep) {
     Objects.requireNonNull(keep, "keep cannot be null");
     return value -> keep.test(value) ? value : null;
@@ -58,6 +59,7 @@ public final class Operators {
   /// @param drop predicate that returns true for messages to drop
   /// @param <T> the operator's value type
   /// @return an operator that returns null when `drop.test(input)` is true, else its input
+  /// @throws NullPointerException if `drop` is null
   public static <T> UnaryOperator<T> drop(final Predicate<T> drop) {
     Objects.requireNonNull(drop, "drop cannot be null");
     return value -> drop.test(value) ? null : value;
@@ -76,6 +78,7 @@ public final class Operators {
   /// @param sideEffect the action to run on each value
   /// @param <T> the operator's value type
   /// @return an operator that runs `sideEffect.accept(input)` and returns input unchanged
+  /// @throws NullPointerException if `sideEffect` is null
   public static <T> UnaryOperator<T> peek(final Consumer<T> sideEffect) {
     Objects.requireNonNull(sideEffect, "sideEffect cannot be null");
     return value -> {
@@ -97,6 +100,7 @@ public final class Operators {
   /// @param mapper the function to apply to each value
   /// @param <T> the operator's value type
   /// @return an operator that returns `mapper.apply(input)`
+  /// @throws NullPointerException if `mapper` is null
   public static <T> UnaryOperator<T> map(final Function<T, T> mapper) {
     Objects.requireNonNull(mapper, "mapper cannot be null");
     return mapper::apply;
@@ -116,6 +120,7 @@ public final class Operators {
   /// @param op the operator to wrap with error handling
   /// @param <T> the operator's value type
   /// @return an operator that returns its input on exception (logged via the registry's logger)
+  /// @throws NullPointerException if `op` is null
   public static <T> UnaryOperator<T> safe(final UnaryOperator<T> op) {
     Objects.requireNonNull(op, "op cannot be null");
     return MessageProcessorRegistry.withOperatorErrorHandling(op);
@@ -133,6 +138,7 @@ public final class Operators {
   ///
   /// @param fieldName the key that must be present in the message map
   /// @return an operator that returns the input map when the field is present, else `null`
+  /// @throws NullPointerException if `fieldName` is null
   public static UnaryOperator<Map<String, Object>> requireField(final String fieldName) {
     Objects.requireNonNull(fieldName, "fieldName cannot be null");
     return msg -> (msg != null && msg.containsKey(fieldName)) ? msg : null;
@@ -151,6 +157,7 @@ public final class Operators {
   /// @param from the source key
   /// @param to the destination key
   /// @return an operator that renames the key in-place, or returns the input unchanged when absent
+  /// @throws NullPointerException if `from` or `to` is null
   public static UnaryOperator<Map<String, Object>> rename(final String from, final String to) {
     Objects.requireNonNull(from, "from cannot be null");
     Objects.requireNonNull(to, "to cannot be null");
@@ -177,6 +184,7 @@ public final class Operators {
   /// @param ops operators to chain in order
   /// @param <T> the operator's value type
   /// @return a single operator equivalent to applying each step in order, short-circuiting on null
+  /// @throws NullPointerException if `ops` or any of its elements is null
   @SafeVarargs
   public static <T> UnaryOperator<T> compose(final UnaryOperator<T>... ops) {
     Objects.requireNonNull(ops, "ops cannot be null");
@@ -203,6 +211,7 @@ public final class Operators {
   ///
   /// @param fields the keys to remove from the message
   /// @return an operator that removes the fields in-place, or returns `null` when the input is null
+  /// @throws NullPointerException if `fields` is null
   public static UnaryOperator<Map<String, Object>> removeFields(final String... fields) {
     Objects.requireNonNull(fields, "fields cannot be null");
     return msg -> {
@@ -226,6 +235,7 @@ public final class Operators {
   /// @param key the field name to set
   /// @param value the value to write under `key`
   /// @return an operator that sets the field in-place, or returns `null` when the input is null
+  /// @throws NullPointerException if `key` is null
   public static UnaryOperator<Map<String, Object>> addField(final String key, final Object value) {
     Objects.requireNonNull(key, "key cannot be null");
     return msg -> {
