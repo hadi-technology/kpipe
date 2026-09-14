@@ -204,6 +204,7 @@ class OperatorsTest {
     assertThrows(NullPointerException.class, () -> Operators.rename(null, "to"));
     assertThrows(NullPointerException.class, () -> Operators.rename("from", null));
     assertThrows(NullPointerException.class, () -> Operators.compose((UnaryOperator<String>[]) null));
+    assertThrows(NullPointerException.class, () -> Operators.<String>compose(String::strip, null));
     assertThrows(NullPointerException.class, () -> Operators.removeFields((String[]) null));
     assertThrows(NullPointerException.class, () -> Operators.addField(null, "value"));
   }
