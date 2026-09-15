@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -190,5 +191,21 @@ class OperatorsTest {
   void removeFieldsShouldHandleNullInput() {
     final var op = Operators.removeFields("password");
     assertNull(op.apply(null));
+  }
+
+  @Test
+  void factoriesShouldRejectNullArguments() {
+    assertThrows(NullPointerException.class, () -> Operators.filter(null));
+    assertThrows(NullPointerException.class, () -> Operators.drop(null));
+    assertThrows(NullPointerException.class, () -> Operators.peek(null));
+    assertThrows(NullPointerException.class, () -> Operators.map(null));
+    assertThrows(NullPointerException.class, () -> Operators.safe(null));
+    assertThrows(NullPointerException.class, () -> Operators.requireField(null));
+    assertThrows(NullPointerException.class, () -> Operators.rename(null, "to"));
+    assertThrows(NullPointerException.class, () -> Operators.rename("from", null));
+    assertThrows(NullPointerException.class, () -> Operators.compose((UnaryOperator<String>[]) null));
+    assertThrows(NullPointerException.class, () -> Operators.<String>compose(String::strip, null));
+    assertThrows(NullPointerException.class, () -> Operators.removeFields((String[]) null));
+    assertThrows(NullPointerException.class, () -> Operators.addField(null, "value"));
   }
 }

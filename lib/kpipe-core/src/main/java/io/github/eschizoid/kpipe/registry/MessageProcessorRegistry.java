@@ -224,6 +224,7 @@ public class MessageProcessorRegistry {
   /// @param <T>      the pipeline value type
   /// @return a new operator that logs and swallows exceptions raised by the original
   public static <T> UnaryOperator<T> withOperatorErrorHandling(final UnaryOperator<T> operator) {
+    Objects.requireNonNull(operator, "operator cannot be null");
     return RegistryFunctions.withOperatorErrorHandling(operator, LOGGER);
   }
 
